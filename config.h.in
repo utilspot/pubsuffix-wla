@@ -1,0 +1,6 @@
+/* config.h.  Generated from cconfig.h.in by CMake.  */
+
+#cmakedefine PUBSUFFIX_ASSETS_DIR  "@PUBSUFFIX_ASSETS_DIR@"
+#cmakedefine PUBSUFFIX_BASE_URL    "@PUBSUFFIX_BASE_URL@"
+#cmakedefine PUBSUFFIX_ROOT_URL    "@PUBSUFFIX_ROOT_URL@"
+#cmakedefine PUBSUFFIX_PSL_URL     "@PUBSUFFIX_PSL_URL@"

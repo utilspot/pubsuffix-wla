@@ -1,0 +1,660 @@
+:root {
+  --bg: #eef1f7;
+  --surface: #ffffff;
+  --surface-2: #f4f6fb;
+  --border: #dde2ec;
+  --text: #17203a;
+  --muted: #667085;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-contrast: #ffffff;
+  --danger: #b42318;
+  --danger-bg: #fef3f2;
+  --danger-border: #fecdc9;
+  --code-bg: #f6f8fa;
+  --hero-from: #1e3a8a;
+  --hero-to: #2563eb;
+  --hero-text: #eef2ff;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 8px 24px rgba(16, 24, 40, 0.06);
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b0f19;
+    --surface: #141a27;
+    --surface-2: #1b2333;
+    --border: #2a3346;
+    --text: #e8edf7;
+    --muted: #98a2b3;
+    --accent: #5b8cff;
+    --accent-hover: #7aa2ff;
+    --accent-contrast: #0b0f19;
+    --danger: #ff7b72;
+    --danger-bg: #2d1a1a;
+    --danger-border: #5c2b28;
+    --code-bg: #0b0f19;
+    --hero-from: #14204a;
+    --hero-to: #1e3a8a;
+    --hero-text: #dfe7ff;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.55;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- hero ---------- */
+.hero {
+  position: relative;
+  background:
+    radial-gradient(120% 140% at 50% -20%, rgba(255, 255, 255, 0.18), transparent 60%),
+    linear-gradient(135deg, var(--hero-from), var(--hero-to));
+  color: var(--hero-text);
+  padding: 30px 20px 32px;
+}
+
+.hero__inner {
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Back to the site root; only rendered when the app lives under a sub-path. */
+.home-link {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--hero-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.home-link:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.hero h1 {
+  margin: 0 0 10px;
+  /* Scales with the viewport instead of jumping at one breakpoint. */
+  font-size: clamp(1.65rem, 1.1rem + 2.4vw, 2.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Icon + app name, used as the hero heading. */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+}
+
+.brand img {
+  flex: none;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.hero p {
+  margin: 0 auto;
+  max-width: 560px;
+  color: var(--hero-text);
+  opacity: 0.82;
+  font-size: 1rem;
+}
+
+/* ---------- layout ---------- */
+.container {
+  flex: 1;
+  width: 100%;
+  max-width: 780px;
+  margin: 24px auto 0;
+  padding: 0 20px;
+}
+
+/* ---------- tool description, below the form ---------- */
+.tool__lead {
+  color: var(--muted);
+  font-size: 0.95rem;
+  /* Sits under the form, so the gap it owns is the one above itself. */
+  margin: 2px 0 18px;
+  padding: 0 4px;
+}
+
+.tool__lead em {
+  font-style: normal;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+/* The options drawer is secondary: no shadow until you open it. */
+.card.options {
+  box-shadow: none;
+}
+
+.card.options[open] {
+  box-shadow: var(--shadow);
+}
+
+/* ---------- fields ---------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.field input[type="text"],
+.field textarea {
+  font: inherit;
+  padding: 11px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text);
+  width: 100%;
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+  background: var(--surface);
+}
+
+.examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 14px 0 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.chip {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.chip:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  appearance: none;
+  font: inherit;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn--primary {
+  width: 100%;
+  /* Owns the gap above itself, so it does not depend on the sample picker
+     that only development builds render. */
+  margin-top: 18px;
+  padding: 12px 18px;
+  font-size: 1rem;
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn--link {
+  background: none;
+  border: none;
+  color: var(--accent);
+  padding: 6px 0 0;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+/* ---------- options ---------- */
+.options {
+  margin: 10px 0;
+}
+
+.options > summary {
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--muted);
+  list-style: none;
+}
+
+.options > summary::-webkit-details-marker {
+  display: none;
+}
+
+.options > summary::before {
+  content: "▸";
+  display: inline-block;
+  margin-right: 8px;
+  color: var(--muted);
+  transition: transform 0.15s;
+}
+
+.options[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.options__body {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.options__body--row {
+  flex-direction: row;
+  gap: 14px;
+}
+
+.options__body--row .field,
+.options__body--row .options__col {
+  flex: 1;
+}
+
+.options__body--row fieldset {
+  flex: 0 0 auto;
+}
+
+.options__col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+fieldset {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+legend {
+  padding: 0 6px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.checks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+}
+
+/* ---------- results ---------- */
+.alert {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: var(--danger);
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  margin: 0 0 16px;
+}
+
+.results__head h2 {
+  margin: 0 0 14px;
+  font-size: 1.05rem;
+}
+
+.muted {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.expansions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.expansions li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  word-break: break-word;
+}
+
+.copy-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  color: var(--muted);
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.copy-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.components {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.components__row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 12px;
+  padding: 11px 14px;
+  background: var(--surface);
+}
+
+.components__row dt {
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.components__row dt code {
+  font-weight: 400;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.components__row dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  align-self: center;
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* ---------- raw json disclosure ---------- */
+.raw {
+  margin-top: 16px;
+  border-top: 1px dashed var(--border);
+  padding-top: 12px;
+}
+
+.raw > summary {
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.raw__body {
+  position: relative;
+  margin-top: 10px;
+}
+
+.raw__body .copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.raw pre {
+  margin: 0;
+  padding: 14px;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+/* ---------- footer ---------- */
+.site-footer {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 20px 20px 16px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 640px) {
+  .hero h1 {
+    font-size: 1.6rem;
+  }
+  .components__row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+  .options__body--row {
+    flex-direction: column;
+  }
+}
+
+/* ---------- mode switcher inside a panel ---------- */
+.modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.mode {
+  appearance: none;
+  font: inherit;
+  text-align: left;
+  flex: 1 1 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.mode:hover {
+  border-color: var(--accent);
+}
+
+.mode span {
+  font-size: 0.78rem;
+}
+
+.mode.is-active {
+  border-color: var(--accent);
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+/* ---------- select, matching the text inputs ---------- */
+.field select {
+  font: inherit;
+  padding: 11px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text);
+  width: 100%;
+}
+
+.field select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+/* ---------- probability / similarity bar ---------- */
+.meter {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  min-width: 120px;
+}
+
+.meter__fill {
+  height: 100%;
+  background: var(--accent);
+}
+
+/* ---------- normalize_string result ---------- */
+.normalized {
+  font-size: 1.05rem;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  word-break: break-word;
+}
+
+/* ---------- near-dupe blocking keys ---------- */
+.hashes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hashes code {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-size: 0.82rem;
+  word-break: break-all;
+}
+
+/* ---------- keyboard focus ---------- */
+:where(button, a, select, summary, input[type="checkbox"]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* ---------- links ---------- */
+.site-footer a {
+  color: inherit;
+  text-decoration-color: var(--border);
+  text-underline-offset: 2px;
+}
+
+.site-footer a:hover {
+  color: var(--accent);
+}
+
+/* ---------- motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

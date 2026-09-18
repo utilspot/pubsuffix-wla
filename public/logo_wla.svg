@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" role="img" aria-label="Suffix Explorer">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1f6feb" />
+      <stop offset="1" stop-color="#1d4ed8" />
+    </linearGradient>
+  </defs>
+  <rect width="320" height="200" rx="16" fill="url(#bg)" />
+
+  <!-- The app's mark, as in favicon.svg -->
+  <g transform="translate(24 24) scale(0.75)">
+    <rect width="64" height="64" rx="12" fill="#ffffff" />
+    <path
+      d="M32 12c-8.837 0-16 6.94-16 15.5C16 39 32 52 32 52s16-13 16-24.5C48 18.94 40.837 12 32 12z"
+      fill="#1f6feb"
+    />
+    <circle cx="32" cy="27" r="6.5" fill="#ffffff" />
+  </g>
+  <text x="84" y="61" fill="#ffffff" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+    font-size="22" font-weight="700">Suffix Explorer</text>
+
+  <!-- A domain split the way a lookup reports it -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="18">
+    <rect x="24" y="104" width="272" height="44" rx="10" fill="#ffffff" fill-opacity="0.12" />
+    <text x="40" y="132" fill="#ffffff" fill-opacity="0.7">www.</text>
+    <text x="84" y="132" fill="#ffffff" font-weight="700">example</text>
+    <rect x="162" y="114" width="74" height="24" rx="6" fill="#ffffff" />
+    <text x="199" y="132" fill="#1d4ed8" font-weight="700" text-anchor="middle">.co.uk</text>
+  </g>
+  <text x="24" y="176" fill="#ffffff" fill-opacity="0.8"
+    font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13">Public Suffix List lookups</text>
+</svg>

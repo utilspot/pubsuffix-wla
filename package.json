@@ -1,0 +1,30 @@
+{
+  "name": "pubsuffix-wla",
+  "version": "1.0.0",
+  "description": "Public suffix list lookups over a JSON API.",
+  "type": "module",
+  "homepage": "https://github.com/utilspot/pubsuffix-wla",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/utilspot/pubsuffix-wla.git"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "bitmake": "npx bitmake build",
+    "server": "build/package/bin/pubsuffix_server",
+    "start": "npm run build && node server/server.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.2",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^6.1.1",
+    "bitmake": "^0.0.1-develop.16",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.6.3",
+    "vite": "^8.3.0"
+  }
+}

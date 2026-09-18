@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>libpsl emulation — admin</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f4f6fb;
+        --surface: #fff;
+        --border: #d9dee9;
+        --text: #1b2333;
+        --muted: #6b7385;
+        --accent: #1f6feb;
+        --code-bg: #f6f8fa;
+        --ok-bg: #ecfdf3;
+        --ok: #027a48;
+        --err-bg: #fef3f2;
+        --err: #b42318;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0d1117;
+          --surface: #161b22;
+          --border: #2b333f;
+          --text: #e6edf3;
+          --muted: #9aa4b2;
+          --accent: #4a90ff;
+          --code-bg: #0d1117;
+          --ok-bg: #10231a;
+          --ok: #4ade80;
+          --err-bg: #2d1a1a;
+          --err: #ff7b72;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+      main { max-width: 900px; margin: 0 auto; padding: 28px 20px 60px; }
+      h1 { font-size: 1.4rem; margin: 0 0 4px; }
+      p.sub { margin: 0 0 24px; color: var(--muted); }
+      .endpoint {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 18px 20px;
+        margin-bottom: 20px;
+      }
+      .endpoint h2 { margin: 0 0 12px; font-size: 1.1rem; }
+      .endpoint h2 code { font-size: 0.85em; color: var(--muted); }
+      .preset {
+        display: flex;
+        gap: 10px;
+        padding: 8px 0;
+        border-top: 1px solid var(--border);
+        align-items: flex-start;
+      }
+      .preset:first-of-type { border-top: none; }
+      .preset label { font-weight: 600; cursor: pointer; }
+      .preset .meta { color: var(--muted); font-weight: 400; font-size: 0.85rem; }
+      .preset pre {
+        margin: 6px 0 0;
+        background: var(--code-bg);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 8px 10px;
+        font-size: 0.78rem;
+        overflow-x: auto;
+        max-height: 180px;
+      }
+      .preset .body { flex: 1; min-width: 0; }
+      textarea {
+        width: 100%;
+        min-height: 130px;
+        font: 0.8rem/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        padding: 10px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        background: var(--code-bg);
+        color: var(--text);
+        resize: vertical;
+      }
+      .bar {
+        position: sticky;
+        bottom: 0;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding: 14px 0;
+        background: linear-gradient(transparent, var(--bg) 30%);
+      }
+      button {
+        appearance: none;
+        border: 1px solid var(--accent);
+        background: var(--accent);
+        color: #fff;
+        font: inherit;
+        font-weight: 600;
+        padding: 9px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      button.ghost { background: transparent; color: var(--accent); }
+      #status { font-size: 0.9rem; }
+      #status.ok { color: var(--ok); }
+      #status.err { color: var(--err); }
+      .flash { border-radius: 8px; padding: 4px 10px; }
+      .flash.ok { background: var(--ok-bg); }
+      .flash.err { background: var(--err-bg); }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>libpsl emulation — admin</h1>
+      <p class="sub">
+        Operator page for the emulation server — not part of the user-facing
+        service. Choose which hardcoded JSON each API method returns. Saved to
+        <code>server/state.json</code>; takes effect on the next request.
+      </p>
+
+      <form id="form">
+        <div class="bar">
+          <button type="submit">Save</button>
+          <button type="button" class="ghost" id="reload">Reload</button>
+          <span id="status"></span>
+        </div>
+      </form>
+    </main>
+
+    <script>
+      const CUSTOM = '__custom__';
+      const state = { presets: null, current: null };
+
+      async function load() {
+        const [presets, current] = await Promise.all([
+          fetch('/api/presets').then((r) => r.json()),
+          fetch('/api/state').then((r) => r.json()),
+        ]);
+        state.presets = presets;
+        state.current = current;
+        render();
+      }
+
+      /** "domain_info" -> "Domain info" */
+      function methodLabel(method) {
+        const words = method.replace(/_/g, ' ');
+        return words.charAt(0).toUpperCase() + words.slice(1);
+      }
+
+      // Endpoint sections are generated from Object.keys(state.presets) rather
+      // than hardcoded in the HTML, so every method in presets.json — present
+      // and future — automatically gets a section here.
+      function render() {
+        const form = document.getElementById('form');
+        const bar = form.querySelector('.bar');
+
+        for (const section of form.querySelectorAll('.endpoint')) {
+          section.remove();
+        }
+
+        for (const endpoint of Object.keys(state.presets)) {
+          const section = document.createElement('section');
+          section.className = 'endpoint';
+          section.dataset.endpoint = endpoint;
+          section.innerHTML = `
+            <h2>${escapeText(methodLabel(endpoint))} <code>POST /psl</code></h2>
+            <div class="presets"></div>`;
+
+          const host = section.querySelector('.presets');
+          const cfg = state.current[endpoint] || { mode: 'preset', presetId: '', customJson: '' };
+
+          for (const [id, preset] of Object.entries(state.presets[endpoint])) {
+            const checked = cfg.mode === 'preset' && cfg.presetId === id;
+            host.appendChild(
+              presetRow(endpoint, id, preset.label, preset.sampleInput, preset.response, checked),
+            );
+          }
+
+          // custom row
+          const wrap = document.createElement('div');
+          wrap.className = 'preset';
+          const isCustom = cfg.mode === 'custom';
+          wrap.innerHTML = `
+            <input type="radio" name="${endpoint}" value="${CUSTOM}" ${isCustom ? 'checked' : ''} />
+            <div class="body">
+              <label>Custom JSON</label>
+              <div class="meta">Returned verbatim. Must be valid JSON.</div>
+              <textarea name="${endpoint}__custom" placeholder='{ "domain": "example.com" }'>${
+                escapeText(cfg.customJson || '')
+              }</textarea>
+            </div>`;
+          host.appendChild(wrap);
+
+          form.insertBefore(section, bar);
+        }
+      }
+
+      function presetRow(endpoint, id, label, sample, response, checked) {
+        const row = document.createElement('div');
+        row.className = 'preset';
+        row.innerHTML = `
+          <input type="radio" name="${endpoint}" value="${id}" ${checked ? 'checked' : ''} />
+          <div class="body">
+            <label>${escapeText(label)} <span class="meta">(${id})</span></label>
+            <div class="meta">input: ${escapeText(sample)}</div>
+            <pre>${escapeText(JSON.stringify(response, null, 2))}</pre>
+          </div>`;
+        return row;
+      }
+
+      function escapeText(s) {
+        return String(s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+      }
+
+      function collect() {
+        const out = {};
+        for (const section of document.querySelectorAll('.endpoint')) {
+          const endpoint = section.dataset.endpoint;
+          const picked = section.querySelector(`input[name="${endpoint}"]:checked`);
+          const value = picked ? picked.value : '';
+          const customJson = section.querySelector(`textarea[name="${endpoint}__custom"]`).value;
+          out[endpoint] =
+            value === CUSTOM
+              ? { mode: 'custom', presetId: '', customJson }
+              : { mode: 'preset', presetId: value, customJson };
+        }
+        return out;
+      }
+
+      const statusEl = document.getElementById('status');
+      function flash(msg, kind) {
+        statusEl.textContent = msg;
+        statusEl.className = `flash ${kind}`;
+      }
+
+      document.getElementById('form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        flash('Saving…', 'ok');
+        try {
+          const res = await fetch('/api/state', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(collect()),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+          state.current = data.state;
+          flash('Saved ✓', 'ok');
+        } catch (err) {
+          flash(err.message, 'err');
+        }
+      });
+
+      document.getElementById('reload').addEventListener('click', () => {
+        flash('', 'ok');
+        load();
+      });
+
+      load().catch((err) => flash(err.message, 'err'));
+    </script>
+  </body>
+</html>

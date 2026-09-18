@@ -1,0 +1,205 @@
+{
+  "domain_info": {
+    "com": {
+      "label": "Plain ICANN suffix — com",
+      "sampleInput": "com",
+      "response": {
+        "domain": "com",
+        "normalized": "com",
+        "is_public_suffix": true,
+        "unregistrable_domain": "com",
+        "version": "0.21.5",
+        "suffix_count": 9494,
+        "suffix_exception_count": 24,
+        "suffix_wildcard_count": 35,
+        "builtin_file_time": 1739836800,
+        "builtin_sha1sum": "6c5a17ecd1f9e0e9e8d1e6bb2b1f3c1d4a2f9c3e",
+        "builtin_filename": "public_suffix_list.dafsa",
+        "dist_filename": "public_suffix_list.dat",
+        "builtin_outdated": false
+      }
+    },
+    "co-uk-suffix": {
+      "label": "Multi-label ICANN suffix — co.uk",
+      "sampleInput": "co.uk",
+      "response": {
+        "domain": "co.uk",
+        "normalized": "co.uk",
+        "is_public_suffix": true,
+        "unregistrable_domain": "co.uk",
+        "version": "0.21.5",
+        "suffix_count": 9494,
+        "suffix_exception_count": 24,
+        "suffix_wildcard_count": 35,
+        "builtin_file_time": 1739836800,
+        "builtin_sha1sum": "6c5a17ecd1f9e0e9e8d1e6bb2b1f3c1d4a2f9c3e",
+        "builtin_filename": "public_suffix_list.dafsa",
+        "dist_filename": "public_suffix_list.dat",
+        "builtin_outdated": false
+      }
+    },
+    "github-io-suffix": {
+      "label": "Private suffix — github.io",
+      "sampleInput": "github.io",
+      "response": {
+        "domain": "github.io",
+        "normalized": "github.io",
+        "is_public_suffix": true,
+        "unregistrable_domain": "github.io",
+        "version": "0.21.5",
+        "suffix_count": 9494,
+        "suffix_exception_count": 24,
+        "suffix_wildcard_count": 35,
+        "builtin_file_time": 1739836800,
+        "builtin_sha1sum": "6c5a17ecd1f9e0e9e8d1e6bb2b1f3c1d4a2f9c3e",
+        "builtin_filename": "public_suffix_list.dafsa",
+        "dist_filename": "public_suffix_list.dat",
+        "builtin_outdated": false
+      }
+    },
+    "example-com": {
+      "label": "Registrable domain, not a suffix",
+      "sampleInput": "www.example.com",
+      "response": {
+        "domain": "www.example.com",
+        "normalized": "www.example.com",
+        "is_public_suffix": false,
+        "registrable_domain": "example.com",
+        "unregistrable_domain": "com",
+        "cookie_domain": "example.com",
+        "cookie_domain_acceptable": true,
+        "version": "0.21.5",
+        "suffix_count": 9494,
+        "suffix_exception_count": 24,
+        "suffix_wildcard_count": 35,
+        "builtin_file_time": 1739836800,
+        "builtin_sha1sum": "6c5a17ecd1f9e0e9e8d1e6bb2b1f3c1d4a2f9c3e",
+        "builtin_filename": "public_suffix_list.dafsa",
+        "dist_filename": "public_suffix_list.dat",
+        "builtin_outdated": false
+      }
+    },
+    "co-uk-registrable": {
+      "label": "Registrable domain under co.uk + a rejected cookie domain",
+      "sampleInput": "www.example.co.uk, cookie_domain: co.uk",
+      "response": {
+        "domain": "www.example.co.uk",
+        "normalized": "www.example.co.uk",
+        "is_public_suffix": false,
+        "registrable_domain": "example.co.uk",
+        "unregistrable_domain": "co.uk",
+        "cookie_domain": "co.uk",
+        "cookie_domain_acceptable": false,
+        "version": "0.21.5",
+        "suffix_count": 9494,
+        "suffix_exception_count": 24,
+        "suffix_wildcard_count": 35,
+        "builtin_file_time": 1739836800,
+        "builtin_sha1sum": "6c5a17ecd1f9e0e9e8d1e6bb2b1f3c1d4a2f9c3e",
+        "builtin_filename": "public_suffix_list.dafsa",
+        "dist_filename": "public_suffix_list.dat",
+        "builtin_outdated": false
+      }
+    },
+    "cookie-private-suffix": {
+      "label": "Cookie acceptable under a private suffix",
+      "sampleInput": "a.b.example.github.io, cookie_domain: example.github.io",
+      "response": {
+        "domain": "a.b.example.github.io",
+        "normalized": "a.b.example.github.io",
+        "is_public_suffix": false,
+        "registrable_domain": "example.github.io",
+        "unregistrable_domain": "github.io",
+        "cookie_domain": "example.github.io",
+        "cookie_domain_acceptable": true,
+        "version": "0.21.5",
+        "suffix_count": 9494,
+        "suffix_exception_count": 24,
+        "suffix_wildcard_count": 35,
+        "builtin_file_time": 1739836800,
+        "builtin_sha1sum": "6c5a17ecd1f9e0e9e8d1e6bb2b1f3c1d4a2f9c3e",
+        "builtin_filename": "public_suffix_list.dafsa",
+        "dist_filename": "public_suffix_list.dat",
+        "builtin_outdated": false
+      }
+    },
+    "cookie-mismatched-host": {
+      "label": "Cookie rejected — does not cover the hostname",
+      "sampleInput": "www.example.com, cookie_domain: other.com",
+      "response": {
+        "domain": "www.example.com",
+        "normalized": "www.example.com",
+        "is_public_suffix": false,
+        "registrable_domain": "example.com",
+        "unregistrable_domain": "com",
+        "cookie_domain": "other.com",
+        "cookie_domain_acceptable": false,
+        "version": "0.21.5",
+        "suffix_count": 9494,
+        "suffix_exception_count": 24,
+        "suffix_wildcard_count": 35,
+        "builtin_file_time": 1739836800,
+        "builtin_sha1sum": "6c5a17ecd1f9e0e9e8d1e6bb2b1f3c1d4a2f9c3e",
+        "builtin_filename": "public_suffix_list.dafsa",
+        "dist_filename": "public_suffix_list.dat",
+        "builtin_outdated": false
+      }
+    },
+    "idn": {
+      "label": "IDN — normalization changes the domain",
+      "sampleInput": "MÜNCHEN.DE",
+      "response": {
+        "domain": "MÜNCHEN.DE",
+        "normalized": "münchen.de",
+        "is_public_suffix": false,
+        "registrable_domain": "münchen.de",
+        "unregistrable_domain": "de",
+        "version": "0.21.5",
+        "suffix_count": 9494,
+        "suffix_exception_count": 24,
+        "suffix_wildcard_count": 35,
+        "builtin_file_time": 1739836800,
+        "builtin_sha1sum": "6c5a17ecd1f9e0e9e8d1e6bb2b1f3c1d4a2f9c3e",
+        "builtin_filename": "public_suffix_list.dafsa",
+        "dist_filename": "public_suffix_list.dat",
+        "builtin_outdated": false
+      }
+    },
+    "no-suffix": {
+      "label": "No public suffix found + built-in list looks outdated",
+      "sampleInput": "localhost",
+      "response": {
+        "domain": "localhost",
+        "normalized": "localhost",
+        "is_public_suffix": false,
+        "version": "0.21.5",
+        "suffix_count": 9201,
+        "suffix_exception_count": 24,
+        "suffix_wildcard_count": 33,
+        "builtin_file_time": 1675209600,
+        "builtin_sha1sum": "1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b",
+        "builtin_filename": "public_suffix_list.dafsa",
+        "dist_filename": "public_suffix_list.dat",
+        "builtin_outdated": true
+      }
+    },
+    "empty": {
+      "label": "Empty input",
+      "sampleInput": "",
+      "response": {
+        "domain": "",
+        "normalized": "",
+        "is_public_suffix": false,
+        "version": "0.21.5",
+        "suffix_count": 9494,
+        "suffix_exception_count": 24,
+        "suffix_wildcard_count": 35,
+        "builtin_file_time": 1739836800,
+        "builtin_sha1sum": "6c5a17ecd1f9e0e9e8d1e6bb2b1f3c1d4a2f9c3e",
+        "builtin_filename": "public_suffix_list.dafsa",
+        "dist_filename": "public_suffix_list.dat",
+        "builtin_outdated": false
+      }
+    }
+  }
+}

@@ -36,7 +36,10 @@ export function App() {
 
       <footer className="site-footer">
         <span>
-          Copyright © 2026 · MIT · <a href={__HOMEPAGE__}>GitHub</a>
+          Copyright © 2026 · MIT ·{' '}
+          <a href={__HOMEPAGE__} target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
         </span>
       </footer>
     </div>
